@@ -1,0 +1,12 @@
+<!-- Send message form in user page -->
+{% extends 'admin/change_form.html' %}
+
+{% block submit_buttons_bottom %}
+{{ block.super }}
+<div class="submit-row">
+    Отправить сообщение пользователю:<br/><br/>
+    <textarea class="vTextField" name="message"></textarea>
+    <input type="submit" value="Отправить" name="send_message" class="default">
+</div>
+{% endblock %}
+

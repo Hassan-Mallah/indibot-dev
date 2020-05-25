@@ -1,0 +1,29 @@
+version: '3'
+services:
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=postgres 
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+  bot:
+    build: ./bot
+    env_file:
+      - .env
+    depends_on:
+      - django
+    volumes:
+      - ./django/media/reviews:/django/media/reviews
+    restart: always
+  django:
+    build: ./django
+    ports:
+      - "8090:8090"
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    volumes:
+      - ./django:/django
+    restart: always
