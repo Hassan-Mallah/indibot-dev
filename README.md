@@ -14,7 +14,7 @@ Deploy:
     Create API_TOKEN
     1. docker exec -it <Container> bash
     2. python manage.py drf_create_token admin
-    3. copy to the token to .env file
+    3. copy the token to .env file
 
     
 Test Bot:
