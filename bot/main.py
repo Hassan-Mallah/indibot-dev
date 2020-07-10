@@ -4,9 +4,9 @@ from bot.states import (agreement, start, name, review, cooperation, phone_email
                         check_phone_email, product_availability, product_quality,
                         packaging, certificates, subtype, user_input)
 
-#local
-from dotenv import load_dotenv
-load_dotenv()
+# Dev: load .env locally
+# from dotenv import load_dotenv
+# load_dotenv()
 
 AGREEMENT, NAME, PHONE_EMAIL, REVIEW, USER_INPUT = range(5)
 

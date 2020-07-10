@@ -7,9 +7,9 @@ import requests
 from django.http import HttpResponseRedirect
 
 
-#local
-from dotenv import load_dotenv
-load_dotenv()
+# Dev: load .env locally
+# from dotenv import load_dotenv
+# load_dotenv()
 
 # Register your models here.
 

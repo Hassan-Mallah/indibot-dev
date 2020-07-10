@@ -5,9 +5,9 @@ import requests
 import os
 import re
 
-#local
-from dotenv import load_dotenv
-load_dotenv()
+# Dev: load .env locally
+# from dotenv import load_dotenv
+# load_dotenv()
 
 API_TOKEN = os.environ.get('API_TOKEN')
 User_Link = os.environ.get('API_URL') + 'User/'
