@@ -5,9 +5,10 @@ import requests
 import os
 import re
 
-os.environ['BOT_TOKEN'] = '1277759652:AAEqz7vixRjOPOu6nkO9b5-jKd80jTqhPpU'
-os.environ['API_URL'] = 'http://127.0.0.1:8000/'
-os.environ['API_TOKEN'] = 'b213fc249d66d3dafb2a1ce3c60733addbda2f28'
+#local
+from dotenv import load_dotenv
+load_dotenv()
+
 API_TOKEN = os.environ.get('API_TOKEN')
 User_Link = os.environ.get('API_URL') + 'User/'
 headers = {'Authorization': 'token ' + API_TOKEN}

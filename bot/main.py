@@ -1,18 +1,14 @@
 from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, ConversationHandler, MessageHandler, Filters
 import os
-from bot.states import agreement, start, name, review, cooperation, phone_email, check_phone_email, product_availability, product_quality, packaging, certificates, subtype, user_input
+from bot.states import (agreement, start, name, review, cooperation, phone_email,
+                        check_phone_email, product_availability, product_quality,
+                        packaging, certificates, subtype, user_input)
 
+#local
+from dotenv import load_dotenv
+load_dotenv()
 
 AGREEMENT, NAME, PHONE_EMAIL, REVIEW, USER_INPUT = range(5)
-
-os.environ['BOT_TOKEN'] = '1277759652:AAEqz7vixRjOPOu6nkO9b5-jKd80jTqhPpU'
-os.environ['API_URL'] = 'http://127.0.0.1:8000/'
-os.environ['API_TOKEN'] = 'b213fc249d66d3dafb2a1ce3c60733addbda2f28'
-
-# VPN/Socks/HTTP
-REQUEST_KWARGS = {
-    'proxy_url': 'socks5://localhost:9150',
-}
 
 conv_handler = ConversationHandler(
     entry_points=[CommandHandler('start', start)],
@@ -38,7 +34,7 @@ conv_handler = ConversationHandler(
     fallbacks=[]
 )
 
-updater = Updater(token=os.environ.get('BOT_TOKEN'), use_context=True)  # @inditest_bot
+updater = Updater(token=os.environ.get('BOT_TOKEN'), use_context=True)
 dispatcher = updater.dispatcher
 updater.dispatcher.add_handler(conv_handler)
 

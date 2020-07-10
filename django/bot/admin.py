@@ -7,7 +7,9 @@ import requests
 from django.http import HttpResponseRedirect
 
 
-os.environ['BOT_TOKEN'] = '1277759652:AAEqz7vixRjOPOu6nkO9b5-jKd80jTqhPpU'
+#local
+from dotenv import load_dotenv
+load_dotenv()
 
 # Register your models here.
 
