@@ -42,7 +42,6 @@ class ReviewAdmin(admin.ModelAdmin):
                 text = request.POST['message']
                 telegram_id = obj.telegram_id
                 token = os.environ.get('BOT_TOKEN')
-                proxies = {'https': "socks5://localhost:9150"}
 
                 data = {
                     'chat_id': telegram_id,
@@ -50,7 +49,7 @@ class ReviewAdmin(admin.ModelAdmin):
                     'parse_mode': 'Html'
                 }
                 url = 'https://api.telegram.org/bot{}/sendMessage'.format(token)
-                requests.post(url, data=data, proxies=proxies)
+                requests.post(url, data=data)
 
                 self.message_user(request, "Сообщение отправлено")
             else:

@@ -1,12 +1,13 @@
 from bot.utils import main_menu, enter_name, enter_email_phone, enter_city
-from telegram import InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove
+from telegram import InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeyboardMarkup, KeyboardButton, \
+    ReplyKeyboardRemove
 import requests
 import os
 import re
 
 os.environ['BOT_TOKEN'] = '1277759652:AAEqz7vixRjOPOu6nkO9b5-jKd80jTqhPpU'
 os.environ['API_URL'] = 'http://127.0.0.1:8000/'
-os.environ['API_TOKEN'] = 'e72946c64357991ab841c934589ab72417e2347f'
+os.environ['API_TOKEN'] = 'b213fc249d66d3dafb2a1ce3c60733addbda2f28'
 API_TOKEN = os.environ.get('API_TOKEN')
 User_Link = os.environ.get('API_URL') + 'User/'
 headers = {'Authorization': 'token ' + API_TOKEN}
@@ -25,13 +26,14 @@ def agreement(update, context):
         return NAME
     # ask to share information
     elif query.data == 'no':
-        text = 'Чтобы начать работу, вам необходимо дать согласие на обработку персональных данных'
+        text = 'Чтобы начать работу, вам необходимо дать согласие <a href="http://www.acdamate.com/terms-of-use/">на обработку персональных данных</a>'
         keyboard = [[
             InlineKeyboardButton('✅ Да', callback_data='yes'),
             InlineKeyboardButton('⛔️  Нет', callback_data='no')
         ]]
         reply_markup = InlineKeyboardMarkup(keyboard)
-        context.bot.send_message(chat_id=update.effective_chat.id, text=text, reply_markup=reply_markup)
+        context.bot.send_message(chat_id=update.effective_chat.id, text=text, reply_markup=reply_markup,
+                                 parse_mode='Html')
 
 
 def start(update, context):
@@ -45,15 +47,15 @@ def start(update, context):
             'telegram_id': user_id,
             'username': username
         }
-        r = requests.post(User_Link, data=data, headers=headers)
-        text = 'Добро пожаловать в чат-бот Индилайт 🤖. Вы согласны на обработку персональных данных?'
+        requests.post(User_Link, data=data, headers=headers)
+        text = 'Добро пожаловать в чат-бот Индилайт 🤖. Вы согласны <a href="http://www.acdamate.com/terms-of-use/">на обработку персональных данных</a>?'
         # ask to share information
         keyboard = [[
             InlineKeyboardButton('✅ Да', callback_data='yes'),
             InlineKeyboardButton('⛔️  Нет', callback_data='no')
         ]]
         reply_markup = InlineKeyboardMarkup(keyboard)
-        update.message.reply_text(text, reply_markup=reply_markup)
+        update.message.reply_text(text, reply_markup=reply_markup, parse_mode='Html')
         return AGREEMENT
     # name not entered
     elif request['name'] == '':
@@ -93,7 +95,8 @@ def phone_email(update, context):
         text = 'Напишите свой номер телефона в формате 7********** или нажмите на кнопку "Поделиться"'
         keyboard = [[KeyboardButton('Поделиться номером', request_contact=True)]]
         reply_markup = ReplyKeyboardMarkup(keyboard)
-        context.bot.send_message(chat_id=update.effective_chat.id, text=text, parse_mode='Html', reply_markup=reply_markup)
+        context.bot.send_message(chat_id=update.effective_chat.id, text=text, parse_mode='Html',
+                                 reply_markup=reply_markup)
     elif query.data == 'email':
         EMAIL_OR_PHONE = 'EMAIL'
         text = 'Напишите свой e-mail'
@@ -172,12 +175,12 @@ def user_input(update, context):
         'text': text
     }
     requests.post(Review_Link, data=data, headers=headers)
-
     text = 'Спасибо, ваше обращение принято!'
-    context.bot.send_message(chat_id=update.effective_chat.id, text=text, parse_mode='Html')
+    keyboard = [[InlineKeyboardButton('↩️ Главное меню', callback_data='menu')]]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    context.bot.send_message(text=text, chat_id=update.effective_chat.id, reply_markup=reply_markup, parse_mode='Html')
 
-    main_menu(update, context)
-    return REVIEW
+    return USER_INPUT
 
 
 def subtype(update, context):
@@ -191,17 +194,17 @@ def subtype(update, context):
         text = 'Продукция Индилайт охлаждается при помощи специального газа, поэтому первые секунды после открытия мясо и упаковка могут пахнуть этим газом. Через пару минут запах полностью исчезает, однако, если у вас этого не произошло, пожалуйста, оставьте сообщение.'
     elif data == '3':
         text = 'Процесс от разделки до полки занимает 8 часов, однако, если вы остались недовольны свежестью нашей продукции, пожалуйста, оставьте сообщение и укажите, в каком магазине была приобретена продукция.'
-    # Наличие продукции - product_availability
-    elif data == '6':
-        text = 'Информация, где нас найти'
+
     # Упаковка - packging
     elif data == '8':
         text = 'Мы находимся в постоянном поиске решений, которые позволят сохранить свежесть и качество продукта. В настоящее время пластиковая газо-вакуумная упаковка маркирована типом 5. Цифрой 7 маркируется только пленка, которая не подлежит переработке.'
     # Сертификаты - certificates
     elif data == '9':
-        text = 'Вся продукция Индилайт, за исключением купат, соответствует стандартам качества Халяль (+ вложение самого сертификата)'
+        context.bot.send_photo(chat_id=update.effective_chat.id, photo=open('halal_certificate.jpeg', 'rb'))
+        text = 'Вся продукция Индилайт, за исключением купат, соответствует стандартам качества Халяль'
     elif data == '10':
-        text = 'вся продукция Индилайт прошла...'
+        context.bot.sendDocument(chat_id=update.effective_chat.id, document=open('SanPin_certificate.pdf', 'rb'))
+        text = 'Вся продукция Индилайт прошла сертификацию и соответствует требованиям ГОСТ Р ИСО 22000-2019 и ГОСТ Р ИСО 9001-2015'
     # go back to menu
     elif data == 'menu':
         main_menu(update, context)
@@ -209,24 +212,28 @@ def subtype(update, context):
 
     # send subtype msg
     if text != '':
-        context.bot.send_message(chat_id=update.effective_chat.id, text=text, parse_mode='Html', reply_markup=reply_markup)
+        context.bot.send_message(chat_id=update.effective_chat.id, text=text, parse_mode='Html',
+                                 reply_markup=reply_markup)
 
     if not data in ['email', 'phone']:
         if text != '':
             text = 'Оставьте сообщение'
             keyboard = [[InlineKeyboardButton('↩️ Главное меню', callback_data='menu')]]
             reply_markup = InlineKeyboardMarkup(keyboard)
-            context.bot.send_message(chat_id=update.effective_chat.id, text=text, parse_mode='Html', reply_markup=reply_markup)
+            context.bot.send_message(chat_id=update.effective_chat.id, text=text, parse_mode='Html',
+                                     reply_markup=reply_markup)
             return USER_INPUT
         else:
             text = 'Оставьте сообщение'
-            msg = context.bot.send_message(chat_id=update.effective_chat.id, text=text, parse_mode='Html', reply_markup=reply_markup)
+            msg = context.bot.send_message(chat_id=update.effective_chat.id, text=text, parse_mode='Html',
+                                           reply_markup=reply_markup)
             id = msg['message_id']
             context.bot.delete_message(text='hhh', chat_id=update.effective_chat.id, message_id=id)
 
             keyboard = [[InlineKeyboardButton('↩️ Главное меню', callback_data='menu')]]
             reply_markup = InlineKeyboardMarkup(keyboard)
-            context.bot.send_message(text=text, chat_id=update.effective_chat.id, message_id=id, reply_markup=reply_markup)
+            context.bot.send_message(text=text, chat_id=update.effective_chat.id, message_id=id,
+                                     reply_markup=reply_markup)
             return USER_INPUT
 
 
@@ -235,10 +242,10 @@ def product_quality(update, context):
     TYPE = 1
     text = 'Индилайт строго следит за качеством продукции и внимательно слушает своих покупателей. В этом разделе вы можете оставить обратную связь о качестве нашей продукции'
     keyboard = [[
-        InlineKeyboardButton('🌷 Запах', callback_data='2'),
+        InlineKeyboardButton('Запах', callback_data='2'),
         InlineKeyboardButton('❄️ Свежесть', callback_data='3')],
         [InlineKeyboardButton('🍗 Кости', callback_data='4')],
-         [InlineKeyboardButton('✏️ Оставить обращение', callback_data='1')]
+        [InlineKeyboardButton('✏️ Оставить обращение', callback_data='1')]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
     context.bot.send_message(chat_id=update.effective_chat.id, text=text, reply_markup=reply_markup)
@@ -250,7 +257,7 @@ def product_availability(update, context):
     text = 'Наличие продукции'
     keyboard = [
         [InlineKeyboardButton('🚫 Пропало из ассортимента', callback_data='5')],
-        [InlineKeyboardButton('❓ Где вас найти?', callback_data='6')],
+        # [InlineKeyboardButton('❓ Где вас найти?', callback_data='6')],
         [InlineKeyboardButton('✏️ Оставить обращение', callback_data='1')]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
@@ -263,7 +270,7 @@ def packaging(update, context):
     text = 'Упаковка'
     keyboard = [
         [InlineKeyboardButton('❗️ Повреждение', callback_data='7'),
-        InlineKeyboardButton('♻️ Пластик', callback_data='8')],
+         InlineKeyboardButton('♻️ Пластик', callback_data='8')],
         [InlineKeyboardButton('✏️ Оставить обращение', callback_data='1')]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)

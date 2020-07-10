@@ -1,0 +1,100 @@
+[
+  {
+    "model": "bot.ReviewType",
+    "pk": 1,
+    "fields": {
+      "description": "Качество продукции"
+    }
+  },
+  {
+    "model": "bot.ReviewType",
+    "pk": 2,
+    "fields": {
+      "description": "Наличие продукции"
+    }
+  },
+  {
+    "model": "bot.ReviewType",
+    "pk": 3,
+    "fields": {
+      "description": "Упаковка"
+    }
+  },
+  {
+    "model": "bot.ReviewType",
+    "pk": 4,
+    "fields": {
+      "description": "Сертификаты"
+    }
+  },
+  {
+    "model": "bot.ReviewSubType",
+    "pk": 1,
+    "fields": {
+      "description": "Оставить сообщение"
+    }
+  },
+  {
+    "model": "bot.ReviewSubType",
+    "pk": 2,
+    "fields": {
+      "description": "Запах"
+    }
+  },
+  {
+    "model": "bot.ReviewSubType",
+    "pk": 3,
+    "fields": {
+      "description": "Свежесть"
+    }
+  },
+  {
+    "model": "bot.ReviewSubType",
+    "pk": 4,
+    "fields": {
+      "description": "Кости"
+    }
+  },
+  {
+    "model": "bot.ReviewSubType",
+    "pk": 5,
+    "fields": {
+      "description": "Пропало из ассортимента"
+    }
+  },
+  {
+    "model": "bot.ReviewSubType",
+    "pk": 6,
+    "fields": {
+      "description": "Где вас найти?"
+    }
+  },
+  {
+    "model": "bot.ReviewSubType",
+    "pk": 7,
+    "fields": {
+      "description": "Повреждение"
+    }
+  },
+  {
+    "model": "bot.ReviewSubType",
+    "pk": 8,
+    "fields": {
+      "description": "Пластик"
+    }
+  },
+  {
+    "model": "bot.ReviewSubType",
+    "pk": 9,
+    "fields": {
+      "description": "Халяль"
+    }
+  },
+  {
+    "model": "bot.ReviewSubType",
+    "pk": 10,
+    "fields": {
+      "description": "СанПин"
+    }
+  }
+]
